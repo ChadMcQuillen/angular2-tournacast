@@ -29,6 +29,7 @@ export class Tournament {
     public numberOfPlayersRemaining: number;
     public numberOfRebuys: number;
     public secondsRemaining: number;
+    public state: string;
 
     private timerSubscription: Subscription;
     private levelObserver: Observer<any>;
@@ -44,6 +45,7 @@ export class Tournament {
         this.numberOfEntrants = 0;
         this.numberOfPlayersRemaining = 0;
         this.numberOfRebuys = 0;
+        this.state = 'start-pending';
 
         // expand out breaks as if they were their own level
         this.levelsAndBreaks = [ ];
@@ -80,5 +82,127 @@ export class Tournament {
             this.levelObserver = observer;
             observer.next(this.currentLevelIndex);
         });
+    }
+
+    public start() {
+        if (this.state === 'start-pending') {
+            this.state = 'running';
+            let timer = Observable.timer(1000, 1000);
+            this.timerSubscription = timer.subscribe(t=> {
+                this.timerTick(t);
+            });
+        }
+    }
+
+    public timerTick(t) {
+        this.secondsRemaining--;
+        if (this.secondsRemaining == 0) {
+            if (this.currentLevelIndex < this.levelsAndBreaks.length - 1) {
+                this.currentLevelIndex++;
+                this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
+                if (this.levelObserver) {
+                    this.levelObserver.next(this.currentLevelIndex);
+                }
+            } else {
+                if (this.levelObserver) {
+                    this.levelObserver.next(this.currentLevelIndex);
+                }
+                this.state = 'stopped';
+            }
+        }
+    }
+
+    public pause() {
+        if (this.state === 'running' && this.timerSubscription) {
+            this.state = 'paused';
+            this.timerSubscription.unsubscribe();
+            this.timerSubscription = null;
+        }
+    }
+
+    public resume() {
+        if (this.state === 'paused') {
+            this.state = 'running';
+            let timer = Observable.timer(1000, 1000);
+            this.timerSubscription = timer.subscribe(t=> {
+                this.timerTick(t);
+            });
+        }
+    }
+
+    public stop() {
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+            this.timerSubscription = null;
+        }
+        this.state = 'stopped';
+    }
+
+    public entrantPlus() {
+        this.numberOfEntrants++;
+        this.playerPlus();
+    }
+
+    public entrantMinus() {
+        if (this.numberOfEntrants > 0) {
+            this.numberOfEntrants--;
+            this.playerMinus();
+        }
+    }
+
+    public playerPlus() {
+        if (this.numberOfPlayersRemaining < this.numberOfEntrants) {
+            this.numberOfPlayersRemaining++;
+        }
+    }
+
+    public playerMinus() {
+        var minimumPlayers = 0;
+        if (this.state !== 'start-pending') {
+            minimumPlayers = 1;
+        }
+        if (this.numberOfPlayersRemaining > minimumPlayers) {
+            this.numberOfPlayersRemaining--;
+        }
+    }
+
+    public rebuyPlus() {
+        this.numberOfRebuys++;
+    }
+
+    public rebuyMinus() {
+        if (this.numberOfRebuys > 0) {
+            this.numberOfRebuys--;
+        }
+    }
+
+    public previousLevel() {
+        if (this.state !== 'start-pending' && this.currentLevelIndex > 0) {
+            this.state = 'paused';
+            if (this.timerSubscription) {
+                this.timerSubscription.unsubscribe();
+                this.timerSubscription = null;
+            }
+            this.currentLevelIndex--;
+            this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
+            if (this.levelObserver) {
+                this.levelObserver.next(this.currentLevelIndex);
+            }
+        }
+    }
+
+    public nextLevel() {
+        if (this.state !== 'start-pending' && this.currentLevelIndex < this.levelsAndBreaks.length - 1) {
+            this.state = 'paused';
+            if (this.timerSubscription) {
+                this.timerSubscription.unsubscribe();
+                this.timerSubscription = null;
+            }
+            this.currentLevelIndex++;
+            this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
+            if (this.levelObserver) {
+                this.levelObserver.next(this.currentLevelIndex);
+            }
+        }
     }
 }

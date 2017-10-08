@@ -2,34 +2,40 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer }   from 'rxjs/Observer';
 import { Tournament } from './tournament';
+import { TournamentControlService } from '../core/tournament.control.service';
 
 @Injectable()
 export class TournamentService {
     public tournament: Tournament;
 
-    constructor() {
-        var tournamentInfo = {
-            title: 'Friday Night Poker',
-            description: '$10 Buy-in (1 rebuy through level 5)',
-            buyIn: 10,
-            rebuyAmount: 10,
-            rebuyThroughLevel: 5,
-            levels: [
-                { level: 1,  levelTime: 20, smallBlind: 5,   bigBlind: 10,  ante: 0, breakTime: 0  },
-                { level: 2,  levelTime: 20, smallBlind: 10,  bigBlind: 20,  ante: 0, breakTime: 0  },
-                { level: 3,  levelTime: 20, smallBlind: 15,  bigBlind: 30,  ante: 0, breakTime: 0  },
-                { level: 4,  levelTime: 20, smallBlind: 20,  bigBlind: 40,  ante: 0, breakTime: 0  },
-                { level: 5,  levelTime: 20, smallBlind: 25,  bigBlind: 50,  ante: 0, breakTime: 20 },
-                { level: 6,  levelTime: 20, smallBlind: 50,  bigBlind: 100, ante: 0, breakTime: 0  },
-                { level: 7,  levelTime: 20, smallBlind: 75,  bigBlind: 150, ante: 0, breakTime: 0  },
-                { level: 8,  levelTime: 20, smallBlind: 75,  bigBlind: 150, ante: 0, breakTime: 0  },
-                { level: 9,  levelTime: 20, smallBlind: 100, bigBlind: 200, ante: 0, breakTime: 0  },
-                { level: 10, levelTime: 20, smallBlind: 150, bigBlind: 300, ante: 0, breakTime: 0  },
-                { level: 11, levelTime: 20, smallBlind: 200, bigBlind: 400, ante: 0, breakTime: 0  },
-                { level: 12, levelTime: 20, smallBlind: 300, bigBlind: 600, ante: 0, breakTime: 0  }
-            ],
-            payouts: [ .7, .2, .1 ]
-        };
-        this.tournament = new Tournament(tournamentInfo);
+    constructor(private tournamentControlService: TournamentControlService) {
+        this.tournament = new Tournament(this.tournamentControlService.command.getValue().parameters);
+        this.tournamentControlService.command.subscribe(
+            value => {
+                if (value.command === 'start') {
+                    this.tournament.start();
+                } else if (value.command === 'pause') {
+                    this.tournament.pause();
+                } else if (value.command === 'resume') {
+                    this.tournament.resume();
+                } else if (value.command === 'nextLevel') {
+                    this.tournament.nextLevel();
+                } else if (value.command === 'previousLevel') {
+                    this.tournament.previousLevel();
+                } else if (value.command === 'entrantPlus') {
+                    this.tournament.entrantPlus();
+                } else if (value.command === 'entrantMinus') {
+                    this.tournament.entrantMinus();
+                } else if (value.command === 'playerPlus') {
+                    this.tournament.playerPlus();
+                } else if (value.command === 'playerMinus') {
+                    this.tournament.playerMinus();
+                } else if (value.command === 'rebuyPlus') {
+                    this.tournament.rebuyPlus();
+                } else if (value.command === 'rebuyMinus') {
+                    this.tournament.rebuyMinus();
+                }
+            }
+        );
     }
 }

@@ -1,0 +1,11 @@
+#splashScreen {
+    position:absolute;
+    width:100%;
+    text-align:center;
+    top:50%;
+    transform:translateY(-50%);
+    color:#FFFFFF;
+    background-color:#000000;
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:96px;
+}
