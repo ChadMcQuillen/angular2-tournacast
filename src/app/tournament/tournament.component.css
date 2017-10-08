@@ -249,7 +249,6 @@
     top:50%;
     transform:translateY(-50%);
     text-align:center;
-    color:#FFFFFF;
     font-family:Verdana, Geneva, sans-serif;
     font-size:96px;
 }
@@ -292,4 +291,27 @@
     height:100%;
     margin-left:5%;
     margin-right:15%;
+}
+.timerNormal {
+    color:white;
+}
+.timerLow {
+    color:red;
+}
+.levelSmallText {
+    font-size:16px;
+}
+.levelMediumText {
+    font-size:20px;
+}
+.levelLargeText {
+    font-size:24px;
+}
+.level {
+    fontWeight:normal;
+    color:white;
+}
+.levelCurrent {
+    fontWeight:bold;
+    color:yellow;
 }
