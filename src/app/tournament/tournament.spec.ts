@@ -284,4 +284,43 @@ describe('Tournament', () => {
             expect(tournament.state).toBe('paused');
         });
     });
+    describe('Timer', () => {
+        let levels: any[] = [
+            { level: 1,  levelTime: 1, smallBlind: 5,   bigBlind: 10,  ante: 0, breakTime: 0 },
+            { level: 2,  levelTime: 1, smallBlind: 10,  bigBlind: 20,  ante: 0, breakTime: 0 }
+        ];
+        let tournamentInfo = {
+            title: title,
+            description: description,
+            buyIn: buyIn,
+            rebuyAmount: rebuyAmount,
+            rebuyThroughLevel: rebuyThroughLevel,
+            levels: levels,
+            payouts: onePayout
+        };
+        let tournament = new Tournament(mockTimerTickService, tournamentInfo);
+        it('Starting level should be 1 with 60 seconds remaining', () => {
+            tournament.start();
+            expect(tournament.currentLevelIndex).toBe(0);
+            expect(tournament.secondsRemaining).toBe(60);
+        });
+        it('59 timer ticks should be at level 1 with 1 second remaining', () => {
+            for (var i:number = 60; i > 1; i--) {
+                mockTimerTickService.timerTick();
+            }
+            expect(tournament.currentLevelIndex).toBe(0);
+            expect(tournament.secondsRemaining).toBe(1);
+        });
+        it('Next timer tick should be at level 2 with 60 seconds remaining', () => {
+            mockTimerTickService.timerTick();
+            expect(tournament.currentLevelIndex).toBe(1);
+            expect(tournament.secondsRemaining).toBe(60);
+        });
+        it('60 timer ticks tournament state should be stopped', () => {
+            for (var i:number = 60; i > 0; i--) {
+                mockTimerTickService.timerTick();
+            }
+            expect(tournament.state).toBe('stopped');
+        });
+    });
 });
