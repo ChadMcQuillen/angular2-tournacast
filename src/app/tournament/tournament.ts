@@ -1,4 +1,5 @@
 import { Observable, Observer, Subscription } from 'rxjs/Rx';
+import { TimerTickService } from '../core/timer-tick.service';
 
 export class Tournament {
     public title: string;
@@ -34,7 +35,7 @@ export class Tournament {
     private timerSubscription: Subscription;
     private levelObserver: Observer<any>;
 
-    constructor(tournamentInfo) {
+    constructor(private timerTickService: TimerTickService, tournamentInfo) {
         this.title = tournamentInfo.title;
         this.description = tournamentInfo.description;
         this.buyIn = tournamentInfo.buyIn;
@@ -87,8 +88,7 @@ export class Tournament {
     public start() {
         if (this.state === 'start-pending') {
             this.state = 'running';
-            let timer = Observable.timer(1000, 1000);
-            this.timerSubscription = timer.subscribe(t=> {
+            this.timerSubscription = this.timerTickService.timerTickObservable.subscribe(t=> {
                 this.timerTick(t);
             });
         }
@@ -123,8 +123,7 @@ export class Tournament {
     public resume() {
         if (this.state === 'paused') {
             this.state = 'running';
-            let timer = Observable.timer(1000, 1000);
-            this.timerSubscription = timer.subscribe(t=> {
+            this.timerSubscription = this.timerTickService.timerTickObservable.subscribe(t=> {
                 this.timerTick(t);
             });
         }

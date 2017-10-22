@@ -1,3 +1,5 @@
+import { Observable, Observer } from 'rxjs/Rx';
+import { TimerTickService } from '../core/timer-tick.service';
 import { Tournament } from './tournament';
 
 let title: string = 'Friday Night Poker';
@@ -19,9 +21,32 @@ let simpleTournamentInfo = {
     payouts: onePayout
 };
 
+export class MockTimerTickService extends TimerTickService {
+
+    public timerTickObservable: Observable<number>;
+
+    private timerTickObserver: Observer<any>;
+
+    constructor() {
+        super();
+        this.timerTickObservable = Observable.create(observer => {
+            this.timerTickObserver = observer;
+            return () => {
+            };
+        });
+    }
+
+    public timerTick() {
+        this.timerTickObserver.next(0);
+    }
+}
+
+let mockTimerTickService = new MockTimerTickService();
+
 describe('Tournament', () => {
+
     describe('Constructor', () => {
-        let tournament = new Tournament(simpleTournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
         it(`title should be ${title}`, () => {
             expect(tournament.title).toBe(title);
         });
@@ -66,7 +91,7 @@ describe('Tournament', () => {
                 levels: levels,
                 payouts: onePayout
             };
-            let tournament = new Tournament(tournamentInfo);
+            let tournament = new Tournament(mockTimerTickService, tournamentInfo);
             expect(tournament.levelsAndBreaks.length).toBe(3);
         });
         it('4 levels and 2 breaks should be 6 total levels and breaks', () => {
@@ -85,12 +110,12 @@ describe('Tournament', () => {
                 levels: levels,
                 payouts: onePayout
             };
-            let tournament = new Tournament(tournamentInfo);
+            let tournament = new Tournament(mockTimerTickService, tournamentInfo);
             expect(tournament.levelsAndBreaks.length).toBe(6);
         });
     });
     describe('Pause / Resume', () => {
-        let tournament = new Tournament(simpleTournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
         it('Initial state should be start-pending', () => {
             expect(tournament.state).toBe('start-pending');
         });
@@ -135,12 +160,12 @@ describe('Tournament', () => {
             expect(tournament.state).toBe('stopped');
         });
         it('Stop while start-pending should transition to stopped', () => {
-            tournament = new Tournament(simpleTournamentInfo);
+            tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
             tournament.stop();
             expect(tournament.state).toBe('stopped');
         });
         it('Stop while paused should transition to stopped', () => {
-            tournament = new Tournament(simpleTournamentInfo);
+            tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
             tournament.start();
             expect(tournament.state).toBe('running');
             tournament.pause();
@@ -150,7 +175,7 @@ describe('Tournament', () => {
         });
     });
     describe('Number of Entrants', () => {
-        let tournament = new Tournament(simpleTournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
         it('0 entrants, add entrant should be 1 entrant', () => {
             tournament.entrantPlus();
             expect(tournament.numberOfEntrants).toBe(1);
@@ -165,7 +190,7 @@ describe('Tournament', () => {
         });
     });
     describe('Number of Players Remaining', () => {
-        let tournament = new Tournament(simpleTournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
         it('0 entrants, add entrant should be 1 player remaining', () => {
             tournament.entrantPlus();
             expect(tournament.numberOfPlayersRemaining).toBe(1);
@@ -193,7 +218,7 @@ describe('Tournament', () => {
         });
     });
     describe('Number of Rebuys', () => {
-        let tournament = new Tournament(simpleTournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, simpleTournamentInfo);
         it('0 rebuys, add rebuy should be 1 rebuy', () => {
             tournament.rebuyPlus();
             expect(tournament.numberOfRebuys).toBe(1);
@@ -223,7 +248,7 @@ describe('Tournament', () => {
             levels: levels,
             payouts: onePayout
         };
-        let tournament = new Tournament(tournamentInfo);
+        let tournament = new Tournament(mockTimerTickService, tournamentInfo);
         it('Level decrement while start-pending should remain at level 1', () => {
             tournament.previousLevel();
             expect(tournament.currentLevelIndex).toBe(0);

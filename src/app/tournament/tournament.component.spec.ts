@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { TournamentComponent } from './tournament.component';
 import { TimerFormatPipe } from './timer-format.pipe';
+import { TimerTickService } from '../core/timer-tick.service';
 import { TournamentControlService } from '../core/tournament.control.service';
 
 class MockTournamentControlService extends TournamentControlService {
@@ -45,7 +46,8 @@ describe('TournamentComponent', () => {
         TimerFormatPipe
       ],
       providers: [
-        { provide: TournamentControlService, useClass: MockTournamentControlService }
+        { provide: TournamentControlService, useClass: MockTournamentControlService },
+        TimerTickService
       ]
     })
     .compileComponents();
