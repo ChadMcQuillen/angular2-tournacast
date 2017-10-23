@@ -36,30 +36,30 @@ class MockTournamentControlService extends TournamentControlService {
 };
 
 describe('TournamentComponent', () => {
-  let component: TournamentComponent;
-  let fixture: ComponentFixture<TournamentComponent>;
+    let component: TournamentComponent;
+    let fixture: ComponentFixture<TournamentComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TournamentComponent,
-        TimerFormatPipe
-      ],
-      providers: [
-        { provide: TournamentControlService, useClass: MockTournamentControlService },
-        TimerTickService
-      ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                TournamentComponent,
+                TimerFormatPipe
+            ],
+            providers: [
+                { provide: TournamentControlService, useClass: MockTournamentControlService },
+                TimerTickService
+            ]
+        })
+        .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TournamentComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TournamentComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });
