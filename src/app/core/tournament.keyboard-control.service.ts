@@ -18,11 +18,10 @@ export class TournamentKeyboardControlService extends TournamentControlService {
             { level: 5,  levelTime: 20, smallBlind: 25,  bigBlind: 50,  ante: 0, breakTime: 20 },
             { level: 6,  levelTime: 20, smallBlind: 50,  bigBlind: 100, ante: 0, breakTime: 0  },
             { level: 7,  levelTime: 20, smallBlind: 75,  bigBlind: 150, ante: 0, breakTime: 0  },
-            { level: 8,  levelTime: 20, smallBlind: 75,  bigBlind: 150, ante: 0, breakTime: 0  },
-            { level: 9,  levelTime: 20, smallBlind: 100, bigBlind: 200, ante: 0, breakTime: 0  },
-            { level: 10, levelTime: 20, smallBlind: 150, bigBlind: 300, ante: 0, breakTime: 0  },
-            { level: 11, levelTime: 20, smallBlind: 200, bigBlind: 400, ante: 0, breakTime: 0  },
-            { level: 12, levelTime: 20, smallBlind: 300, bigBlind: 600, ante: 0, breakTime: 0  }
+            { level: 8,  levelTime: 20, smallBlind: 100, bigBlind: 200, ante: 0, breakTime: 0  },
+            { level: 9,  levelTime: 20, smallBlind: 150, bigBlind: 300, ante: 0, breakTime: 0  },
+            { level: 10, levelTime: 20, smallBlind: 200, bigBlind: 400, ante: 0, breakTime: 0  },
+            { level: 11, levelTime: 20, smallBlind: 300, bigBlind: 600, ante: 0, breakTime: 0  }
         ],
         payouts: [ .7, .2, .1 ]
     };
