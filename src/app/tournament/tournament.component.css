@@ -270,7 +270,6 @@
     text-align:center;
     color:#FFFFFF;
     font-family:Verdana, Geneva, sans-serif;
-    font-size:64px;
 }
 #payouts {
     width:100%;
@@ -297,6 +296,12 @@
 }
 .timerLow {
     color:red;
+}
+.blindsLargeText {
+    font-size:64px;
+}
+.blindsSmallText {
+    font-size:48px;
 }
 .levelSmallText {
     font-size:16px;

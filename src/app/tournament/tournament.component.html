@@ -31,7 +31,7 @@
         {{tournament.secondsRemaining | timerFormat: (tournament.levelsAndBreaks[tournament.currentLevelIndex].levelTime >= 60)}}
       </div>
     </div>
-    <div id="blindsContainer">
+    <div id="blindsContainer" [ngClass]="getClassForCurrentBlinds()">
       <div id="blindsTitle" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Break'">Break</div>
       <div id="blindsTitle" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                    tournament.levelsAndBreaks[tournament.currentLevelIndex].ante === 0">Blinds</div>

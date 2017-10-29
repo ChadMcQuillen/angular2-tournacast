@@ -55,6 +55,20 @@ export class TournamentComponent implements OnInit {
         return klass;
     }
 
+    getClassForCurrentBlinds() {
+        var level = this.tournament.levelsAndBreaks[this.tournament.currentLevelIndex];
+        var numberOfDigits = level.smallBlind.toString().length +
+                             level.bigBlind.toString().length;
+        if (level.ante > 0) {
+            numberOfDigits += level.ante.toString().length;
+        }
+        if (numberOfDigits < 13) {
+            return 'blindsLargeText';
+        } else {
+            return 'blindsSmallText';
+        }
+    }
+
     getClassesForBlinds(i) {
         var level = this.tournament.levelsAndBreaks[i];
         var numberOfDigits = level.smallBlind.toString().length +
