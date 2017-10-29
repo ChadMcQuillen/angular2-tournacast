@@ -72,8 +72,10 @@ export class TournamentComponent implements OnInit {
     getClassesForBlinds(i) {
         var level = this.tournament.levelsAndBreaks[i];
         var numberOfDigits = level.smallBlind.toString().length +
-                             level.bigBlind.toString().length +
-                             level.ante.toString().length;
+                             level.bigBlind.toString().length;
+        if (level.ante > 0) {
+            numberOfDigits += level.ante.toString().length;
+        }
         var klass = <any>{ };
         if (numberOfDigits < 8) {
             klass.levelLargeText = true;
