@@ -36,6 +36,8 @@ export class TournamentService {
                     this.tournament.rebuyPlus();
                 } else if (value.command === 'rebuyMinus') {
                     this.tournament.rebuyMinus();
+                } else if (value.command === 'payouts') {
+                    this.tournament.setPayouts(value.parameters);
                 }
             }
         );

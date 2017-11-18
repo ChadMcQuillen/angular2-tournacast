@@ -63,8 +63,8 @@ describe('Tournament', () => {
             expect(tournament.rebuyThroughLevel).toBe(rebuyThroughLevel);
         });
         it('There should be 1 payout of 100%', () => {
-            expect(tournament.payouts.length).toBe(1);
-            expect(tournament.payouts[0]).toBe(1);
+            expect(tournament.payoutPercentages.length).toBe(1);
+            expect(tournament.payoutPercentages[0]).toBe(1);
         });
         it('numberOfEntrants should be 0', () => {
             expect(tournament.numberOfEntrants).toBe(0);

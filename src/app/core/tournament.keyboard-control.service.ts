@@ -4,6 +4,19 @@ import { TournamentControlService } from './tournament.control.service';
 
 @Injectable()
 export class TournamentKeyboardControlService extends TournamentControlService {
+    private payouts = [
+        [ 1                                                ],
+        [ .7,  .3                                          ],
+        [ .6,  .3,   .1                                    ],
+        [ .5,  .25,  .15,  .1                              ],
+        [ .5,  .25,  .15,  .075, .025                      ],
+        [ .45, .2,   .15,  .1,   .075, .025                ],
+        [ .45, .2,   .15,  .1,   .05,  .03, .02            ],
+        [ .45, .2,   .15,  .085, .05,  .03, .02, .015      ],
+        [ .4,  .225, .175, .075, .05,  .03, .02, .015, .01 ]
+    ];
+    private payoutsIndex = 0;
+
     private tournamentInfo = {
         title: 'Friday Night Poker',
         description: '$10 Buy-in (1 rebuy through level 5)',
@@ -23,7 +36,7 @@ export class TournamentKeyboardControlService extends TournamentControlService {
             { level: 10, levelTime: 20, smallBlind: 200, bigBlind: 400, ante: 0, breakTime: 0  },
             { level: 11, levelTime: 20, smallBlind: 300, bigBlind: 600, ante: 0, breakTime: 0  }
         ],
-        payouts: [ .7, .2, .1 ]
+        payouts: this.payouts[this.payoutsIndex]
     };
 
     constructor() {
@@ -42,6 +55,22 @@ export class TournamentKeyboardControlService extends TournamentControlService {
                 this.command.next({command:'rebuyMinus'});
             } else if (event.key === '6') {
                 this.command.next({command:'rebuyPlus'});
+            } else if (event.key === '7') {
+                if (this.payoutsIndex > 0) {
+                    this.payoutsIndex--;
+                    this.command.next({
+                        command:'payouts',
+                        parameters:this.payouts[this.payoutsIndex]
+                    });
+                }
+            } else if (event.key === '8') {
+                if (this.payoutsIndex < this.payouts.length - 1) {
+                    this.payoutsIndex++;
+                    this.command.next({
+                        command:'payouts',
+                        parameters:this.payouts[this.payoutsIndex]
+                    });
+                }
             } else if (event.key === 't') {
                 this.command.next({command:'tournament',parameters:this.tournamentInfo});
             } else if (event.key === 's') {

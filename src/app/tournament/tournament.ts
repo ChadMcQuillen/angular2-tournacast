@@ -25,6 +25,7 @@ export class Tournament {
     }>;
     public currentLevelIndex: number;
     public levelObservable: Observable<number>;
+    public payoutPercentages: Array<number>;
     public payouts: Array<number>;
     public numberOfEntrants: number;
     public numberOfPlayersRemaining: number;
@@ -42,11 +43,13 @@ export class Tournament {
         this.rebuyAmount = tournamentInfo.rebuyAmount;
         this.rebuyThroughLevel = tournamentInfo.rebuyThroughLevel;
         this.levels = tournamentInfo.levels;
-        this.payouts = tournamentInfo.payouts;
+        this.payoutPercentages = tournamentInfo.payouts;
         this.numberOfEntrants = 0;
         this.numberOfPlayersRemaining = 0;
         this.numberOfRebuys = 0;
         this.state = 'start-pending';
+
+        this.recalculatePayouts();
 
         // expand out breaks as if they were their own level
         this.levelsAndBreaks = [ ];
@@ -140,12 +143,14 @@ export class Tournament {
     public entrantPlus() {
         this.numberOfEntrants++;
         this.playerPlus();
+        this.recalculatePayouts();
     }
 
     public entrantMinus() {
         if (this.numberOfEntrants > 0) {
             this.numberOfEntrants--;
             this.playerMinus();
+            this.recalculatePayouts();
         }
     }
 
@@ -167,11 +172,13 @@ export class Tournament {
 
     public rebuyPlus() {
         this.numberOfRebuys++;
+        this.recalculatePayouts();
     }
 
     public rebuyMinus() {
         if (this.numberOfRebuys > 0) {
             this.numberOfRebuys--;
+            this.recalculatePayouts();
         }
     }
 
@@ -203,5 +210,50 @@ export class Tournament {
                 this.levelObserver.next(this.currentLevelIndex);
             }
         }
+    }
+
+    public setPayouts(payoutPercentages) {
+        this.payoutPercentages = payoutPercentages;
+        this.recalculatePayouts();
+    }
+
+    private recalculatePayouts() {
+        // use largest remainder method to distribute fractional payouts
+        let pot = this.numberOfEntrants * this.buyIn +
+                  this.numberOfRebuys * this.rebuyAmount;
+        let sum = 0;
+
+        let payouts = this.payoutPercentages.map(function(payoutPercentage, i) {
+            let amount = Math.floor(pot * payoutPercentage);
+            sum += amount;
+            return {
+                amount: amount,
+                remainder: (pot * payoutPercentage) % 1,
+                originalIndex: i,
+            };
+        });
+
+        // sort by remainder then amount
+        if (sum != pot) {
+            let parts = payouts.sort(function(a, b) {
+                if (a.remainder == b.remainder) {
+                    return (a.amount < b.amount) ? -1 : (a.amount > b.amount) ? 1 : 0;
+                } else {
+                    return (a.remainder < b.remainder) ? -1 : 1;
+                }
+            }).reverse();
+
+            let diff = pot - sum;
+            let i = 0;
+            while (i < diff) {
+                parts[i].amount++;
+                i++;
+            }
+
+            payouts = payouts.sort(function(a, b) {
+                return a.originalIndex - b.originalIndex;
+            });
+        }
+        this.payouts = payouts.map(payout => payout.amount);
     }
 }

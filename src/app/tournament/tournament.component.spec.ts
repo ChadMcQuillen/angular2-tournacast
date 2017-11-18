@@ -74,6 +74,12 @@ class MockTournamentControlService extends TournamentControlService {
     public previousLevel() {
         this.command.next({command:'previousLevel'});
     }
+    public setPayouts(payouts) {
+        this.command.next({
+            command:'payouts',
+            parameters:payouts
+        });
+    }
 };
 
 class MockTimerTickService extends TimerTickService {
@@ -459,5 +465,49 @@ describe('TournamentComponent', () => {
         for (let i = 0; i < expectedResults.length; i++) {
             testBlindSchedule(i, expectedResults[i], tableText);
         };
+    });
+    describe('Payouts', () => {
+        function testPayout(payouts, expectedResult) {
+            it(`should display ${payouts.length} payouts`, () => {
+                let tournamentControlService = fixture.debugElement.injector.get(TournamentControlService);
+                for (let i = 0; i < 13; i++) {
+                    tournamentControlService.entrantPlus();
+                }
+                tournamentControlService.setPayouts(payouts);
+                fixture.detectChanges();
+                de = fixture.debugElement.query(By.css('#payouts'));
+                el = de.nativeElement;
+                let lis = el.querySelectorAll('li');
+                expect(lis.length).toBe(payouts.length);
+                for (let j = 0; j < lis.length; j++) {
+                    expect(lis[j].textContent.trim().replace(/\s\s+/g, ' ')).toBe(expectedResult[j]);
+                }
+            });
+        }
+        let payouts = [
+            [ 1                                                ],
+            [ .7,  .3                                          ],
+            [ .6,  .3,   .1                                    ],
+            [ .5,  .25,  .15,  .1                              ],
+            [ .5,  .25,  .15,  .075, .025                      ],
+            [ .45, .2,   .15,  .1,   .075, .025                ],
+            [ .45, .2,   .15,  .1,   .05,  .03, .02            ],
+            [ .45, .2,   .15,  .085, .05,  .03, .02, .015      ],
+            [ .4,  .225, .175, .075, .05,  .03, .02, .015, .01 ]
+        ];
+        let expectedResults = [
+            [ '1st: $130'                                                                                            ],
+            [ '1st: $91', '2nd: $39'                                                                                 ],
+            [ '1st: $78', '2nd: $39', '3rd: $13'                                                                     ],
+            [ '1st: $65', '2nd: $33', '3rd: $19', '4th: $13'                                                         ],
+            [ '1st: $65', '2nd: $33', '3rd: $19', '4th: $10', '5th: $3'                                              ],
+            [ '1st: $59', '2nd: $26', '3rd: $19', '4th: $13', '5th: $10', '6th: $3'                                  ],
+            [ '1st: $59', '2nd: $26', '3rd: $19', '4th: $13', '5th: $6',  '6th: $4', '7th: $3'                       ],
+            [ '1st: $59', '2nd: $26', '3rd: $19', '4th: $11', '5th: $6',  '6th: $4', '7th: $3', '8th: $2'            ],
+            [ '1st: $52', '2nd: $29', '3rd: $23', '4th: $10', '5th: $6',  '6th: $4', '7th: $3', '8th: $2', '9th: $1' ]
+        ];
+        for (let i = 0; i < payouts.length; i++) {
+            testPayout(payouts[i], expectedResults[i]);
+        }
     });
 });

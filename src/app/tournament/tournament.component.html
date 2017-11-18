@@ -109,7 +109,7 @@
   <div id="footer">
     <ul id="payouts">
       <li class="payout" *ngFor="let payout of tournament.payouts; let i = index">
-        {{places[i]}}:  {{payout * (tournament.buyIn * tournament.numberOfEntrants + tournament.rebuyAmount * tournament.numberOfRebuys) | currency:'USD':true:'1.0-0'}}
+        {{places[i]}}:  {{payout | currency:'USD':true:'1.0-0'}}
       </li>
     </ul>
   </div>
