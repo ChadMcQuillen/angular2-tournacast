@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { ImageService } from '../core/image.service';
 import { TournamentControlService } from '../core/tournament.control.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { TournamentControlService } from '../core/tournament.control.service';
 export class SplashScreenComponent implements OnInit {
 
     constructor(private router: Router,
+                private imageService: ImageService,
                 private tournamentControlService: TournamentControlService) {
         this.tournamentControlService.command.subscribe(
             value => {
@@ -18,6 +20,14 @@ export class SplashScreenComponent implements OnInit {
                 }
             }
         );
+        const imagesLoadedSubscription = this.imageService.imagesLoaded.subscribe(
+            value => {
+                if (value > 0) {
+                    imagesLoadedSubscription.unsubscribe();
+                    this.router.navigate(['/slideshow']);
+                }
+            }
+        )
     }
 
     ngOnInit() {
