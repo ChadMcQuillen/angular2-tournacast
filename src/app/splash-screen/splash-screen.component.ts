@@ -13,9 +13,10 @@ export class SplashScreenComponent implements OnInit {
     constructor(private router: Router,
                 private imageService: ImageService,
                 private tournamentControlService: TournamentControlService) {
-        this.tournamentControlService.command.subscribe(
+        const tournamentControlSubscription = this.tournamentControlService.command.subscribe(
             value => {
                 if (value.command === 'tournament') {
+                    tournamentControlSubscription.unsubscribe();
                     this.router.navigate(['/tournament']);
                 }
             }
