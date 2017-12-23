@@ -1,3 +1,4 @@
+import { Router }            from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe }      from '@angular/common';
 import { Tournament }        from './tournament';
@@ -19,11 +20,16 @@ export class TournamentComponent implements OnInit {
     public visibleLevels;
     public places = [ '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th' ];
 
-    constructor(private tournamentService: TournamentService) {
+    constructor(private router: Router,
+                private tournamentService: TournamentService) {
         this.tournament = tournamentService.tournament;
         this.tournament.levelObservable.subscribe(
             value => {
                 this.setVisibleLevels();
+            },
+            null,
+            () => {
+                this.router.navigate(['/slideshow']);
             }
         );
     }

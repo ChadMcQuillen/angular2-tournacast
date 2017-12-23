@@ -107,10 +107,7 @@ export class Tournament {
                     this.levelObserver.next(this.currentLevelIndex);
                 }
             } else {
-                if (this.levelObserver) {
-                    this.levelObserver.next(this.currentLevelIndex);
-                }
-                this.state = 'stopped';
+                this.stop();
             }
         }
     }
@@ -138,6 +135,9 @@ export class Tournament {
             this.timerSubscription = null;
         }
         this.state = 'stopped';
+        if (this.levelObserver) {
+            this.levelObserver.complete();
+        }
     }
 
     public entrantPlus() {
