@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer }   from 'rxjs/Observer';
-import { Tournament } from './tournament';
-import { TimerTickService } from '../core/timer-tick.service';
-import { TournamentControlService } from '../core/tournament.control.service';
+import { Tournament } from '../tournament/tournament';
+import { TimerTickService } from './timer-tick.service';
+import { TournamentControlService } from './tournament.control.service';
 
 @Injectable()
 export class TournamentService {
@@ -11,10 +11,11 @@ export class TournamentService {
 
     constructor(private tournamentControlService: TournamentControlService,
                 private timerTickService: TimerTickService) {
-        this.tournament = new Tournament(timerTickService, this.tournamentControlService.command.getValue().parameters);
         this.tournamentControlService.command.subscribe(
             value => {
-                if (value.command === 'start') {
+                if (value.command === 'tournament') {
+                    this.tournament = new Tournament(this.timerTickService, value.parameters);
+                } else if (value.command === 'start') {
                     this.tournament.start();
                 } else if (value.command === 'pause') {
                     this.tournament.pause();

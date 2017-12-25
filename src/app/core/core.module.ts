@@ -6,6 +6,7 @@ import { TimerTickService } from './timer-tick.service';
 import { OneSecondTimerTickService } from './one-second-timer-tick.service';
 import { TournamentControlService } from './tournament.control.service';
 import { TournamentKeyboardControlService } from './tournament.keyboard-control.service';
+import { TournamentService } from './tournament.service';
 
 export let tournamentControlServiceFactory = () => {
     return new TournamentKeyboardControlService();
@@ -22,6 +23,7 @@ export let timerTickServiceFactory = () => {
     ],
     providers: [
         ImageService,
+        TournamentService,
         {
             provide: TournamentControlService,
             useFactory: tournamentControlServiceFactory

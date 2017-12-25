@@ -2,15 +2,12 @@ import { Router }            from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe }      from '@angular/common';
 import { Tournament }        from './tournament';
-import { TournamentService } from './tournament.service';
+import { TournamentService } from '../core/tournament.service';
 
 @Component({
     selector: 'app-tournament',
     templateUrl: './tournament.component.html',
-    styleUrls: ['./tournament.component.css'],
-    providers: [
-        TournamentService
-    ]
+    styleUrls: ['./tournament.component.css']
 })
 export class TournamentComponent implements OnInit {
 
