@@ -70,6 +70,10 @@ export class TournamentService {
         } else if (value.command === 'start') {
             this.tournament.start();
             data.info = {state: this.tournament.state};
+        } else if (value.command === 'stop') {
+            this.tournament.stop();
+            // this.tournament.state is null by the time we get to here
+            data.info = {state: 'stopped'};
         } else if (value.command === 'pause') {
             this.tournament.pause();
             data.info = {state: this.tournament.state};
