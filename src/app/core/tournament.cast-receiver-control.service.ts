@@ -12,7 +12,6 @@ export class TournamentCastReceiverControlService extends TournamentControlServi
     private messageBus: any;
 
     constructor() {
-        console.log('TournamentCastReceiverControlService constructed');
         super();
         this.command = new BehaviorSubject({});
 
