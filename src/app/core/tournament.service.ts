@@ -30,7 +30,7 @@ export class TournamentService {
 
     private getTournamentInfo(data: any) {
         let level = this.tournament.levelsAndBreaks[this.tournament.currentLevelIndex];
-        let levelText = level.levelType + ' ' + (level.levelIndex + 1);
+        let levelText = level.levelType + ' ' + level.levelIndex;
         data.info = {
             state: this.tournament.state,
             level: levelText,
