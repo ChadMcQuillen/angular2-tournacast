@@ -58,7 +58,16 @@ export class TournamentService {
             this.tournamentStructure = value.parameters;
             this.tournament = new Tournament(this.timerTickService, value.parameters);
             this.tournament.levelChange.subscribe(
-                null,
+                value => {
+                    let level = this.tournament.levelsAndBreaks[this.tournament.currentLevelIndex];
+                    let levelText = level.levelType + ' ' + level.levelIndex;
+                    let levelUpdate = {
+                        info: {
+                            level: levelText
+                        }
+                    };
+                    this.tournamentControlService.broadcastTournamentUpdate(levelUpdate);
+                },
                 null,
                 () => {
                     this.tournamentControl.next('completed');
