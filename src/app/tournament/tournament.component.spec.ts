@@ -8,6 +8,7 @@ import { Observable, Observer } from 'rxjs/Rx';
 import { TournamentComponent } from './tournament.component';
 import { TimerFormatPipe } from './timer-format.pipe';
 import { TimerTickService } from '../core/timer-tick.service';
+import { TournamentService } from '../core/tournament.service';
 import { TournamentControlService } from '../core/tournament.control.service';
 
 let tournamentInfo = {
@@ -119,6 +120,7 @@ describe('TournamentComponent', () => {
                 RouterTestingModule.withRoutes([]),
             ],
             providers: [
+                TournamentService,
                 { provide: TournamentControlService, useClass: MockTournamentControlService },
                 { provide: TimerTickService, useClass: MockTimerTickService }
             ]
