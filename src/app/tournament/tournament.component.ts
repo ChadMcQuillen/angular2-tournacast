@@ -20,13 +20,16 @@ export class TournamentComponent implements OnInit {
     constructor(private router: Router,
                 private tournamentService: TournamentService) {
         this.tournament = tournamentService.tournament;
-        this.tournament.levelObservable.subscribe(
+        this.tournamentService.tournamentControl.subscribe(
+            value => {
+                if (value === 'completed') {
+                    this.router.navigate(['/slideshow']);
+                }
+            }
+        );
+        this.tournament.levelChange.subscribe(
             value => {
                 this.setVisibleLevels();
-            },
-            null,
-            () => {
-                this.router.navigate(['/slideshow']);
             }
         );
     }

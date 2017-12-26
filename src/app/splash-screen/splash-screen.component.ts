@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ImageService } from '../core/image.service';
-import { TournamentControlService } from '../core/tournament.control.service';
+import { TournamentService } from '../core/tournament.service';
 
 @Component({
     selector: 'app-splash-screen',
@@ -12,11 +12,10 @@ export class SplashScreenComponent implements OnInit {
 
     constructor(private router: Router,
                 private imageService: ImageService,
-                private tournamentControlService: TournamentControlService) {
-        const tournamentControlSubscription = this.tournamentControlService.command.subscribe(
+                private tournamentService: TournamentService) {
+        this.tournamentService.tournamentControl.subscribe(
             value => {
-                if (value.command === 'tournament') {
-                    tournamentControlSubscription.unsubscribe();
+                if (value === 'start-pending') {
                     this.router.navigate(['/tournament']);
                 }
             }

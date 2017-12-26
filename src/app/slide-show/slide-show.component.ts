@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Image } from '../core/image';
 import { ImageService } from '../core/image.service';
-import { TournamentControlService } from '../core/tournament.control.service';
+import { TournamentService } from '../core/tournament.service';
 
 @Component({
     selector: 'app-slide-show',
@@ -20,10 +20,10 @@ export class SlideShowComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private imageService: ImageService,
-                private tournamentControlService: TournamentControlService) {
-        this.tournamentControlService.command.subscribe(
+                private tournamentService: TournamentService) {
+        this.tournamentService.tournamentControl.subscribe(
             value => {
-                if (value.command === 'tournament') {
+                if (value === 'start-pending') {
                     this.router.navigate(['/tournament']);
                 }
             }

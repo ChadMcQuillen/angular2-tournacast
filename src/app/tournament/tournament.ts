@@ -1,4 +1,4 @@
-import { Observable, Observer, Subscription } from 'rxjs/Rx';
+import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { TimerTickService } from '../core/timer-tick.service';
 
 export class Tournament {
@@ -24,7 +24,7 @@ export class Tournament {
         ante: number
     }>;
     public currentLevelIndex: number;
-    public levelObservable: Observable<number>;
+    public levelChange: BehaviorSubject<number>;
     public payoutPercentages: Array<number>;
     public payouts: Array<number>;
     public numberOfEntrants: number;
@@ -34,7 +34,6 @@ export class Tournament {
     public state: string;
 
     private timerSubscription: Subscription;
-    private levelObserver: Observer<any>;
 
     constructor(private timerTickService: TimerTickService, tournamentInfo) {
         this.title = tournamentInfo.title;
@@ -82,10 +81,7 @@ export class Tournament {
         }
         this.currentLevelIndex = 0;
         this.secondsRemaining = this.levelsAndBreaks[0].levelTime * 60;
-        this.levelObservable = new Observable(observer => {
-            this.levelObserver = observer;
-            observer.next(this.currentLevelIndex);
-        });
+        this.levelChange = new BehaviorSubject(this.currentLevelIndex);
     }
 
     public start() {
@@ -103,9 +99,7 @@ export class Tournament {
             if (this.currentLevelIndex < this.levelsAndBreaks.length - 1) {
                 this.currentLevelIndex++;
                 this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
-                if (this.levelObserver) {
-                    this.levelObserver.next(this.currentLevelIndex);
-                }
+                this.levelChange.next(this.currentLevelIndex);
             } else {
                 this.stop();
             }
@@ -135,9 +129,7 @@ export class Tournament {
             this.timerSubscription = null;
         }
         this.state = 'stopped';
-        if (this.levelObserver) {
-            this.levelObserver.complete();
-        }
+        this.levelChange.complete();
     }
 
     public entrantPlus() {
@@ -191,9 +183,7 @@ export class Tournament {
             }
             this.currentLevelIndex--;
             this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
-            if (this.levelObserver) {
-                this.levelObserver.next(this.currentLevelIndex);
-            }
+            this.levelChange.next(this.currentLevelIndex);
         }
     }
 
@@ -206,9 +196,7 @@ export class Tournament {
             }
             this.currentLevelIndex++;
             this.secondsRemaining = this.levelsAndBreaks[this.currentLevelIndex].levelTime * 60;
-            if (this.levelObserver) {
-                this.levelObserver.next(this.currentLevelIndex);
-            }
+            this.levelChange.next(this.currentLevelIndex);
         }
     }
 
