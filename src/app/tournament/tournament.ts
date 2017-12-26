@@ -43,6 +43,9 @@ export class Tournament {
         this.rebuyThroughLevel = tournamentInfo.rebuyThroughLevel;
         this.levels = tournamentInfo.levels;
         this.payoutPercentages = tournamentInfo.payouts;
+        if (!this.payoutPercentages) {
+            this.payoutPercentages = [ 1 ];
+        }
         this.numberOfEntrants = 0;
         this.numberOfPlayersRemaining = 0;
         this.numberOfRebuys = 0;
