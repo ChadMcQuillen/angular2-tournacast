@@ -22,7 +22,7 @@
     </div>
     <div id="potContainer">
       <div id="potTitle">Total Pot</div>
-      <div id="pot">{{tournament.buyIn * tournament.numberOfEntrants + tournament.rebuyAmount * tournament.numberOfRebuys | currency:'USD':true:'1.0-0'}}</div>
+      <div id="pot">{{tournament.buyIn * tournament.numberOfEntrants + tournament.rebuyAmount * tournament.numberOfRebuys | currency:tournament.currencyCode:true:'1.0-0'}}</div>
     </div>
   </div>
   <div id="centerArea">
@@ -39,14 +39,14 @@
                                    tournament.levelsAndBreaks[tournament.currentLevelIndex].ante !== 0">Blinds + Ante</div>
         <div id="blinds" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                 tournament.levelsAndBreaks[tournament.currentLevelIndex].ante === 0">
-          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:'USD':true:'1.0-0'}} /
-          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:'USD':true:'1.0-0'}}
+          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}}
         </div>
         <div id="blinds" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                 tournament.levelsAndBreaks[tournament.currentLevelIndex].ante !== 0">
-          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:'USD':true:'1.0-0'}} /
-          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:'USD':true:'1.0-0'}} /
-          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].ante | currency:'USD':true:'1.0-0'}}
+          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+          {{tournament.levelsAndBreaks[tournament.currentLevelIndex].ante | currency:tournament.currencyCode:true:'1.0-0'}}
         </div>
       </div>
       <div id="nextLevelContainer">
@@ -57,15 +57,15 @@
         <div id="nextLevelBlinds" *ngIf="tournament.currentLevelIndex < tournament.levelsAndBreaks.length - 1 &&
                                          tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].levelType === 'Level' &&
                                          tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].ante === 0">
-          Next Level: {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].smallBlind | currency:'USD':true:'1.0-0'}} /
-                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].bigBlind | currency:'USD':true:'1.0-0'}}
+          Next Level: {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}}
         </div>
         <div id="nextLevelBlinds" *ngIf="tournament.currentLevelIndex < tournament.levelsAndBreaks.length - 1 &&
                                          tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].levelType === 'Level' &&
                                          tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].ante !== 0">
-          Next Level: {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].smallBlind | currency:'USD':true:'1.0-0'}} /
-                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].bigBlind | currency:'USD':true:'1.0-0'}} /
-                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].ante | currency:'USD':true:'1.0-0'}}
+          Next Level: {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+                      {{tournament.levelsAndBreaks[tournament.currentLevelIndex + 1].ante | currency:tournament.currencyCode:true:'1.0-0'}}
         </div>
       </div>
   </div>
@@ -81,16 +81,16 @@
         <tr *ngIf="level.levelType === 'Level' &&
                    level.ante === 0">
           <td [ngClass]="getClassesForBlinds(i + startBlindIndex)">
-            {{level.smallBlind | currency:'USD':true:'1.0-0'}} /
-            {{level.bigBlind | currency:'USD':true:'1.0-0'}}
+            {{level.smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+            {{level.bigBlind | currency:tournament.currencyCode:true:'1.0-0'}}
           </td>
         </tr>
         <tr *ngIf="level.levelType === 'Level' &&
                    level.ante !== 0">
           <td [ngClass]="getClassesForBlinds(i + startBlindIndex)">
-            {{level.smallBlind | currency:'USD':true:'1.0-0'}} /
-            {{level.bigBlind | currency:'USD':true:'1.0-0'}} /
-            {{level.ante | currency:'USD':true:'1.0-0'}}
+            {{level.smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+            {{level.bigBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
+            {{level.ante | currency:tournament.currencyCode:true:'1.0-0'}}
           </td>
         </tr>
         <tr *ngIf="level.levelType === 'Break'">
@@ -109,7 +109,7 @@
   <div id="footer">
     <ul id="payouts">
       <li class="payout" *ngFor="let payout of tournament.payouts; let i = index">
-        {{places[i]}}:  {{payout | currency:'USD':true:'1.0-0'}}
+        {{places[i]}}:  {{payout | currency:tournament.currencyCode:true:'1.0-0'}}
       </li>
     </ul>
   </div>

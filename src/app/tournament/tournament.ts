@@ -4,6 +4,8 @@ import { TimerTickService } from '../core/timer-tick.service';
 export class Tournament {
     public title: string;
     public description: string;
+    public locale: string;
+    public currencyCode: string;
     public buyIn: number;
     public rebuyAmount: number;
     public rebuyThroughLevel: number;
@@ -38,6 +40,14 @@ export class Tournament {
     constructor(private timerTickService: TimerTickService, tournamentInfo) {
         this.title = tournamentInfo.title;
         this.description = tournamentInfo.description;
+        this.locale = tournamentInfo.locale;
+        if (!this.locale) {
+            this.locale = 'en-US';
+        }
+        this.currencyCode = tournamentInfo.currencyCode;
+        if (!this.currencyCode) {
+            this.currencyCode = 'USD';
+        }
         this.buyIn = tournamentInfo.buyIn;
         this.rebuyAmount = tournamentInfo.rebuyAmount;
         this.rebuyThroughLevel = tournamentInfo.rebuyThroughLevel;

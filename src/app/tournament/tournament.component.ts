@@ -1,13 +1,24 @@
 import { Router }            from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { CurrencyPipe }      from '@angular/common';
 import { Tournament }        from './tournament';
 import { TournamentService } from '../core/tournament.service';
 
+export function getLocale(tournamentService: TournamentService) {
+    return tournamentService.tournament.locale;
+}
+
 @Component({
     selector: 'app-tournament',
     templateUrl: './tournament.component.html',
-    styleUrls: ['./tournament.component.css']
+    styleUrls: ['./tournament.component.css'],
+    providers: [
+        {
+            provide: LOCALE_ID,
+            deps: [TournamentService],
+            useFactory: getLocale
+        }
+    ]
 })
 export class TournamentComponent implements OnInit {
 
