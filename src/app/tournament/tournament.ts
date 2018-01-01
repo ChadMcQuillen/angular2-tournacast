@@ -1,5 +1,6 @@
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { TimerTickService } from '../core/timer-tick.service';
+import { Beeper } from './beeper';
 
 export class Tournament {
     public title: string;
@@ -116,6 +117,8 @@ export class Tournament {
             } else {
                 this.stop();
             }
+        } else if (this.secondsRemaining <= 5) {
+            Beeper.beep();
         }
     }
 
