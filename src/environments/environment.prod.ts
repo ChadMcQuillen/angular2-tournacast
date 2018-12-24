@@ -1,4 +1,4 @@
 export const environment = {
-  local: false,
+  tournamentControl: "cast-receiver",
   production: true
 };

@@ -11,7 +11,7 @@ import { TournamentKeyboardControlService } from './tournament.keyboard-control.
 import { TournamentService } from './tournament.service';
 
 export let tournamentControlServiceFactory = () => {
-    if (environment.local) {
+    if (environment.tournamentControl === 'keyboard') {
         return new TournamentKeyboardControlService();
     } else {
         return new TournamentCastReceiverControlService();
