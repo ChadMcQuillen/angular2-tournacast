@@ -4,6 +4,7 @@
     left:-50%;
     width:200%;
     height:200%;
+    font-size: 62.5%;
 }
 
 .scaled-to-full-screen img {
@@ -36,8 +37,8 @@
     position:absolute;
     text-align:center;
     color:#FFFFFF;
-    font-family:Verdana, Geneva, sans-serif;
-    font-size:32px;
+    font-family:'Droid Sans', sans-serif;
+    font-size:3.2em;
 }
 
 .photo-credit-text {
@@ -48,6 +49,6 @@
     position:absolute;
     text-align:center;
     color:#FFFFFF;
-    font-family:Verdana, Geneva, sans-serif;
-    font-size:16px;
+    font-family:'Droid Sans', sans-serif;
+    font-size:1.6em;
 }

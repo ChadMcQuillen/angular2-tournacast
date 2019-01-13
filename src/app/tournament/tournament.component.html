@@ -31,18 +31,20 @@
         {{tournament.secondsRemaining | timerFormat: (tournament.levelsAndBreaks[tournament.currentLevelIndex].levelTime >= 60)}}
       </div>
     </div>
-    <div id="blindsContainer" [ngClass]="getClassForCurrentBlinds()">
+    <div id="blindsContainer">
       <div id="blindsTitle" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Break'">Break</div>
       <div id="blindsTitle" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                    tournament.levelsAndBreaks[tournament.currentLevelIndex].ante === 0">Blinds</div>
       <div id="blindsTitle" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                    tournament.levelsAndBreaks[tournament.currentLevelIndex].ante !== 0">Blinds + Ante</div>
-        <div id="blinds" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
+        <div id="blinds" [ngClass]="getClassForCurrentBlinds()"
+                         *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                 tournament.levelsAndBreaks[tournament.currentLevelIndex].ante === 0">
           {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
           {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}}
         </div>
-        <div id="blinds" *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
+        <div id="blinds" [ngClass]="getClassForCurrentBlinds()"
+                         *ngIf="tournament.levelsAndBreaks[tournament.currentLevelIndex].levelType === 'Level' &&
                                 tournament.levelsAndBreaks[tournament.currentLevelIndex].ante !== 0">
           {{tournament.levelsAndBreaks[tournament.currentLevelIndex].smallBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
           {{tournament.levelsAndBreaks[tournament.currentLevelIndex].bigBlind | currency:tournament.currencyCode:true:'1.0-0'}} /
